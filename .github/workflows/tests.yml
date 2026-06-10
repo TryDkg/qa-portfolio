@@ -27,6 +27,18 @@ jobs:
         run: pytest --alluredir=allure-results
         continue-on-error: true
 
+      - name: Load test report history
+        uses: actions/checkout@v4
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Create allure-history directory
+        run: mkdir -p allure-history
+        if: always()
+
       - name: Build Allure report
         uses: simple-elf/allure-report-action@v1.12
         if: always()
