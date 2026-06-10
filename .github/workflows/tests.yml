@@ -3,17 +3,19 @@ name: Run Tests and Publish Allure Report
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # Нужна полная история для push в gh-pages
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,14 +42,23 @@ jobs:
 
       - name: Generate Allure report
         if: always()
-        run: allure generate --clean allure-results -o allure-report
-        continue-on-error: true
+        run: |
+          if [ -d "allure-results" ]; then
+            allure generate --clean allure-results -o allure-report
+          else
+            mkdir -p allure-report
+            echo "No allure results found" > allure-report/index.html
+          fi
 
-      - name: Publish Allure report to GitHub Pages
+      - name: Deploy to gh-pages
         if: always()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: allure-report
-          force_orphan: true   # Создаёт ветку с нуля, игнорируя историю
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages || true
+          git checkout --orphan gh-pages-new
+          rm -rf *
+          cp -r allure-report/* .
+          git add -A
+          git commit -m "Update Allure report" || true
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" gh-pages-new:gh-pages
