@@ -27,25 +27,17 @@ jobs:
         run: pytest --alluredir=allure-results
         continue-on-error: true
 
-      - name: Load test report history
-        uses: actions/checkout@v4
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
+      - name: Setup Java for Allure
+        run: sudo apt-get update && sudo apt-get install -y openjdk-17-jre-headless
 
-      - name: Create allure-history directory
-        run: mkdir -p allure-history
-        if: always()
+      - name: Download Allure CLI
+        run: |
+          wget -q https://github.com/allure-framework/allure2/releases/download/2.32.0/allure-2.32.0.tgz
+          tar -xzf allure-2.32.0.tgz
+          echo "$(pwd)/allure-2.32.0/bin" >> $GITHUB_PATH
 
-      - name: Build Allure report
-        uses: simple-elf/allure-report-action@v1.12
-        if: always()
-        with:
-          allure_results: allure-results
-          allure_history: allure-history
-          keep_reports: 20
+      - name: Generate Allure report
+        run: allure generate --clean allure-results -o allure-report
 
       - name: Publish Allure report to GitHub Pages
         if: always()
@@ -53,4 +45,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: allure-history
+          publish_dir: allure-report
