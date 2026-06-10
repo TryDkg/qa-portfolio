@@ -11,6 +11,15 @@
 - UI: https://www.saucedemo.com
 - API: https://reqres.in
 
+Features
+
+• UI testing with Playwright
+• API testing with Requests
+• Page Object Model
+• JSON Schema validation
+• Allure reporting
+• GitHub Actions CI
+
 **Структура:**
 - `pages/` — Page Object Model для UI
 - `api/` — клиент и JSON-схемы для API
