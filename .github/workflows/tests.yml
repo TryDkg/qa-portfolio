@@ -1,21 +1,17 @@
-name: Run Tests and Publish Allure Report
+name: Run Tests
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -29,36 +25,10 @@ jobs:
 
       - name: Run tests
         run: pytest --alluredir=allure-results
-        continue-on-error: true
 
-      - name: Setup Java for Allure
-        run: sudo apt-get update && sudo apt-get install -y openjdk-17-jre-headless
-
-      - name: Download Allure CLI
-        run: |
-          wget -q https://github.com/allure-framework/allure2/releases/download/2.32.0/allure-2.32.0.tgz
-          tar -xzf allure-2.32.0.tgz
-          echo "$(pwd)/allure-2.32.0/bin" >> $GITHUB_PATH
-
-      - name: Generate Allure report
+      - name: Upload Allure results
         if: always()
-        run: |
-          if [ -d "allure-results" ]; then
-            allure generate --clean allure-results -o allure-report
-          else
-            mkdir -p allure-report
-            echo "No allure results found" > allure-report/index.html
-          fi
-
-      - name: Deploy to gh-pages
-        if: always()
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin gh-pages || true
-          git checkout --orphan gh-pages-new
-          rm -rf *
-          cp -r allure-report/* .
-          git add -A
-          git commit -m "Update Allure report" || true
-          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" gh-pages-new:gh-pages
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
