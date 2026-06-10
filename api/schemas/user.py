@@ -1,28 +1,20 @@
 SINGLE_USER_SCHEMA = {
     "type": "object",
     "properties": {
-        "data": {
-            "type": "object",
-            "properties": {
-                "id": {"type": "integer"},
-                "email": {"type": "string", "format": "email"},
-                "first_name": {"type": "string"},
-                "last_name": {"type": "string"},
-                "avatar": {"type": "string", "format": "uri"}
-            },
-            "required": ["id", "email", "first_name", "last_name", "avatar"]
-        }
+        "id": {"type": "integer"},
+        "name": {"type": "string"},
+        "username": {"type": "string"},
+        "email": {"type": "string", "format": "email"}
     },
-    "required": ["data"]
+    "required": ["id", "name", "username", "email"]
 }
 
 CREATE_USER_SCHEMA = {
     "type": "object",
     "properties": {
+        "id": {"type": "integer"},
         "name": {"type": "string"},
-        "job": {"type": "string"},
-        "id": {"type": "string"},
-        "createdAt": {"type": "string"}
+        "email": {"type": "string"},
     },
-    "required": ["name", "job", "id", "createdAt"]
+    "required": ["id", "name", "email"]
 }
