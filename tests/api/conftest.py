@@ -1,6 +1,8 @@
 import pytest
-from api.reqres_client import JsonPlaceholderClient
+
+from api.reqres_client import ReqresClient
+
 
 @pytest.fixture
-def api_client(api_base_url) -> JsonPlaceholderClient:
-    return JsonPlaceholderClient(api_base_url)
+def reqres_client(api_base_url, reqres_api_key) -> ReqresClient:
+    return ReqresClient(api_base_url, reqres_api_key)

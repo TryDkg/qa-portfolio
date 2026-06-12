@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  REQRES_API_KEY: free_user_3F1pwShzvZA1Lm3cIK4atmqsbNp
+
 jobs:
   test:
     runs-on: ubuntu-latest
