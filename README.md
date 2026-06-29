@@ -1,113 +1,187 @@
-# QA Portfolio — автотесты UI и API
+# QA Automation Portfolio
 
-[![Tests](https://github.com/TryDkg/qa-portfolio/actions/workflows/tests.yml/badge.svg)](https://github.com/TryDkg/qa-portfolio/actions)
-[![Allure Report](https://img.shields.io/badge/Allure%20Report-Live-green)](https://trydkg.github.io/qa-portfolio)
+A practical QA automation project demonstrating UI and API testing using **Python**, **Playwright**, **Pytest**, **Requests**, **Allure Reports**, and **GitHub Actions**.
 
-Проект демонстрирует навыки автоматизации тестирования веб-приложений и REST API.
+The project showcases modern QA automation practices commonly used in real-world software testing projects.
 
-**Стек:** Python, Playwright, Pytest, Requests, JSON Schema, Allure, GitHub Actions.
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![Playwright](https://img.shields.io/badge/Playwright-2EAD33)
+![Pytest](https://img.shields.io/badge/Pytest-0A9EDC)
+![GitHub Actions](https://img.shields.io/badge/CI-GitHub_Actions-success)
+![Allure](https://img.shields.io/badge/Reports-Allure-red)
 
-**Features:**
-- UI testing with Playwright
-- API testing with Requests
-- Page Object Model
-- JSON Schema validation
-- Allure reporting
-- GitHub Actions CI
+---
 
-**Объекты тестирования:**
+## Technologies
 
-| Тип | URL |
-|-----|-----|
-| UI | https://www.saucedemo.com |
-| API | https://reqres.in |
+* Python
+* Playwright
+* Pytest
+* Requests
+* JSON Schema
+* Allure Report
+* GitHub Actions
+* Git
+* REST API
 
-## Структура
+---
 
+## Skills Demonstrated
+
+* UI Test Automation
+* API Testing
+* REST API Validation
+* Functional Testing
+* JSON Schema Validation
+* Page Object Model (POM)
+* Parameterized Tests
+* Test Reporting
+* Environment Configuration
+* Continuous Integration (CI)
+
+---
+
+## Project Features
+
+* UI automation using Playwright
+* API automation using Requests
+* Page Object Model architecture
+* JSON Schema validation
+* Parameterized test scenarios
+* Allure reporting
+* GitHub Actions CI pipeline
+* Environment-based configuration
+* Reusable API client
+
+---
+
+## Test Targets
+
+| Type | Target                    |
+| ---- | ------------------------- |
+| UI   | https://www.saucedemo.com |
+| API  | https://reqres.in         |
+
+---
+
+## Project Structure
+
+```text
+qa-portfolio/
+├── api/
+├── config/
+├── pages/
+├── tests/
+│   ├── api/
+│   └── ui/
+├── .github/workflows/
+├── conftest.py
+├── pytest.ini
+├── requirements.txt
+└── README.md
 ```
-config/          — настройки окружения (.env)
-pages/           — Page Object Model для UI
-api/             — HTTP-клиент и JSON-схемы
-tests/ui/        — UI-тесты
-tests/api/       — API-тесты
-```
 
-## Быстрый старт
+---
+
+## UI Test Coverage
+
+* Successful login
+* Locked user login
+* Invalid credentials
+* Logout
+* Add product to cart
+
+---
+
+## API Test Coverage
+
+* Get users
+* Get single user
+* Create user
+* Pagination
+* JSON Schema validation
+* 404 response validation
+
+---
+
+## Installation
 
 ```bash
+git clone https://github.com/TryDkg/qa-portfolio.git
+
+cd qa-portfolio
+
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+
+source .venv/bin/activate      # Linux/macOS
+# .venv\Scripts\activate       # Windows
+
 pip install -r requirements.txt
+
 playwright install chromium
-cp .env.example .env        # и указать REQRES_API_KEY
-pytest
+
+cp .env.example .env
 ```
 
-## Запуск тестов
+Configure the required environment variables inside `.env`.
 
-```bash
-pytest                  # все тесты
-pytest -m ui            # только UI
-pytest -m api           # только API
-pytest tests/ui/        # конкретная папка
-```
+---
 
-## Allure-отчёт локально
+## Run Tests
+
+Run the complete test suite:
 
 ```bash
 pytest
+```
+
+Run only UI tests:
+
+```bash
+pytest -m ui
+```
+
+Run only API tests:
+
+```bash
+pytest -m api
+```
+
+---
+
+## Generate Allure Report
+
+```bash
+pytest
+
 allure serve allure-results
 ```
 
-Для Allure CLI: [официальная установка](https://allurereport.org/docs/install/) или `npx allure-commandline serve allure-results`.
+---
 
-## Конфигурация
+## Continuous Integration
 
-Переменные окружения (файл `.env` или CI):
+Every push and pull request automatically:
 
-| Переменная | Описание | По умолчанию |
-|------------|----------|--------------|
-| `UI_BASE_URL` | URL UI-приложения | `https://www.saucedemo.com` |
-| `API_BASE_URL` | Базовый URL API | `https://reqres.in/api` |
-| `REQRES_API_KEY` | API-ключ reqres.in | — (обязателен для API-тестов) |
-| `STANDARD_USER` | Логин тестового пользователя | `standard_user` |
-| `STANDARD_PASSWORD` | Пароль | `secret_sauce` |
+* installs dependencies
+* executes UI and API tests
+* generates Allure results
+* validates the test suite
 
-Ключ reqres.in: [app.reqres.in](https://app.reqres.in).
+---
 
-## Покрытие
+## Environment Variables
 
-### UI (Sauce Demo)
+| Variable          | Description        |
+| ----------------- | ------------------ |
+| UI_BASE_URL       | UI application URL |
+| API_BASE_URL      | API base URL       |
+| REQRES_API_KEY    | Reqres API key     |
+| STANDARD_USER     | Test username      |
+| STANDARD_PASSWORD | Test password      |
 
-| Сценарий | Файл |
-|----------|------|
-| Успешный вход | `test_login.py` |
-| Заблокированный пользователь | `test_login.py` |
-| Неверные credentials (parametrize) | `test_login.py` |
-| Выход из системы | `test_login.py` |
-| Добавление товара в корзину | `test_inventory.py` |
+---
 
-### API (Reqres)
+## About
 
-| Сценарий | Файл |
-|----------|------|
-| Список пользователей + JSON Schema | `test_users.py` |
-| Один пользователь + JSON Schema | `test_users.py` |
-| Создание пользователя | `test_users.py` |
-| 404 для несуществующего ID | `test_users.py` |
-| Пагинация (page 1, 2) | `test_users.py` |
-
-## CI/CD
-
-GitHub Actions при push/PR в `main`:
-
-1. Запускает pytest (workflow падает, если тесты красные)
-2. Собирает Allure-отчёт с историей
-3. Публикует на [GitHub Pages](https://trydkg.github.io/qa-portfolio)
-
-## Линтер
-
-```bash
-pip install ruff
-ruff check .
-```
+This repository is part of my QA engineering portfolio and demonstrates practical automation testing skills using modern Python testing tools and industry-standard testing practices.
